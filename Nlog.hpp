@@ -1,3 +1,11 @@
+//   _   _ _               //
+//  | \ | | | ___   __ _   //
+//  |  \| | |/ _ \ / _` |  //
+//  | |\  | | (_) | (_| |  //
+//  |_| \_|_|\___/ \__, |  //
+//                 |___/   //
+//     Made by NULLCT      //
+
 #pragma once
 #include <fstream>
 #include <iostream>
@@ -19,8 +27,7 @@ class Nlog {
   }
 
 public:
-  /*
-   * Error type:
+  /* Error type:
    *   NOTICE
    *   ERROR
    *   Nlog
@@ -46,9 +53,7 @@ public:
     file << getCurrentDateTime() << " [ERROR] :" << _word << "\n";
   }
 
-  void putRaw(std::string _word){
-    file << _word;
-  }
+  void putRaw(std::string _word) { file << _word; }
 
   bool isopen() { return isfileopen; }
 };
