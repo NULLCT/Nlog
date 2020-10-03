@@ -21,13 +21,13 @@ class Nlog {
     file << getCurrentDateTime();
     switch (_status) {
     case NOTICE:
-      file << " [NOTICE] ";
+      file << " [NOTICE]:";
       break;
     case ERROR:
-      file << " [ERROR] ";
+      file << " [ERROR] :";
       break;
     case 256:
-      file << " [Nlog] ";
+      file << " [Nlog]  :";
       break;
     }
   }
@@ -42,14 +42,17 @@ public:
   Nlog(std::string _filename) : file(_filename, std::ios::app) {
     isfileopen = file.is_open();
     addStatus(256);
-    file << "-----Nlog was declared-----\n";
+    file << "-------Nlog was declared-------\n";
   }
 
-  ~Nlog(){
+  ~Nlog() {
     addStatus(256);
     file << "-----Destructor was called-----\n";
     file.close();
   }
 
-  void put(std::string _word) {}
+  void put(std::string _word,int _status) {
+    addStatus(_status);
+    file << _word << "\n";
+  }
 };
