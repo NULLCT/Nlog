@@ -46,5 +46,9 @@ public:
     file << getCurrentDateTime() << " [ERROR] :" << _word << "\n";
   }
 
+  void putRaw(std::string _word){
+    file << _word;
+  }
+
   bool isopen() { return isfileopen; }
 };
