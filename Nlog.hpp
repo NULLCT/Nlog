@@ -17,15 +17,39 @@ class Nlog {
     strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
     return buf;
   }
+  void addStatus(int _status) {
+    file << getCurrentDateTime();
+    switch (_status) {
+    case NOTICE:
+      file << " [NOTICE] ";
+      break;
+    case ERROR:
+      file << " [ERROR] ";
+      break;
+    case 256:
+      file << " [Nlog] ";
+      break;
+    }
+  }
 
 public:
-  enum STATUS{
+  enum STATUS {
     NOTICE = 0,
     ERROR = 1,
+    // Nlog = 256
   };
 
-  Nlog(std::string _filename) : file(_filename) { isfileopen = file.is_open(); }
-  void put(std::string _word){
-    
+  Nlog(std::string _filename) : file(_filename, std::ios::app) {
+    isfileopen = file.is_open();
+    addStatus(256);
+    file << "-----Nlog was declared-----\n";
   }
+
+  ~Nlog(){
+    addStatus(256);
+    file << "-----Destructor was called-----\n";
+    file.close();
+  }
+
+  void put(std::string _word) {}
 };
