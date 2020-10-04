@@ -1,3 +1,4 @@
+/////////////////////////////
 //   _   _ _               //
 //  | \ | | | ___   __ _   //
 //  |  \| | |/ _ \ / _` |  //
@@ -5,55 +6,68 @@
 //  |_| \_|_|\___/ \__, |  //
 //                 |___/   //
 //     Made by NULLCT      //
+/////////////////////////////
 
 #pragma once
+#include <ctime>
 #include <fstream>
 #include <iostream>
 #include <istream>
 #include <ostream>
 #include <string>
+#include <iomanip>
+#include <sstream>
 
-class Nlog {
-  std::ofstream file;
-  bool isfileopen;
+namespace Nlog{
+  enum STATUS{
+    NOTICE = 0,
+    ERROR  = 1
+  };
+  const std::string getDate(int _statustype){
+    std::string str;
 
-  const std::string getCurrentDateTime() {
-    time_t now = time(NULL);
-    struct tm tstruct;
-    char buf[80];
-    tstruct = *localtime(&now);
-    strftime(buf, sizeof(buf), "%Y-%m-%d.%X", &tstruct);
-    return buf;
+    //Time
+    time_t nowtime = time(nullptr);
+    str = ctime(&nowtime);
+
+    //Status
+    switch(_statustype){
+      case NOTICE:
+        str+=" [NOTICE]:";
+        break;
+
+      case ERROR:
+        str+=" [ERROR] :";
+        break;
+
+      case 256:
+        str+=" [Nlog]  :";
+        break;
+
+      default:
+        str+=" [NOTICE]:";
+        break;
+    }
+
+    return str;
   }
 
-public:
-  /* Error type:
-   *   NOTICE
-   *   ERROR
-   *   Nlog
-   */
+  class Nlogger {
+    std::ofstream file;
+    bool isfileopen;
 
-  Nlog(std::string _filename) : file(_filename, std::ios::app) {
-    isfileopen = file.is_open();
-    file << getCurrentDateTime()
-         << " [Nlog]  :-------Nlog was declared-------\n";
-  }
-
-  ~Nlog() {
-    file << getCurrentDateTime()
-         << " [Nlog]  :-----Destructor was called-----\n";
-    file.close();
-  }
-
-  void putNotice(std::string _word) {
-    file << getCurrentDateTime() << " [NOTICE]:" << _word << "\n";
-  }
-
-  void putError(std::string _word) {
-    file << getCurrentDateTime() << " [ERROR] :" << _word << "\n";
-  }
-
-  void putRaw(std::string _word) { file << _word; }
-
-  bool isopen() { return isfileopen; }
-};
+  public:
+    Nlogger(std::string _filename) : file(_filename, std::ios::app) {
+      isfileopen = file.is_open();
+      file << getDate(255) << "-------Nlog was declared-------\n";
+    }
+    ~Nlogger() {
+      file << getDate(255) << "-----Destructor was called-----\n";
+      file.close();
+    }
+    bool isopen() { return isfileopen; }
+    template<class T> inline void operator << (T _input){
+      file << _input;
+    }
+  };
+}
