@@ -29,6 +29,7 @@ namespace Nlog{
     //Time
     time_t nowtime = time(nullptr);
     str = ctime(&nowtime);
+    str.pop_back();
 
     //Status
     switch(_statustype){
@@ -54,18 +55,16 @@ namespace Nlog{
 
   class Nlogger {
     std::ofstream file;
-    bool isfileopen;
 
   public:
     Nlogger(std::string _filename) : file(_filename, std::ios::app) {
-      isfileopen = file.is_open();
       file << getDate(255) << "-------Nlog was declared-------\n";
     }
     ~Nlogger() {
       file << getDate(255) << "-----Destructor was called-----\n";
       file.close();
     }
-    bool isopen() { return isfileopen; }
+    bool isopen() { return file.is_open(); }
     template<class T> inline void operator << (T _input){
       file << _input;
     }
