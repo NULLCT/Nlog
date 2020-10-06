@@ -1,10 +1,4 @@
-PATH=
-
-main:
-	clang++ -std=c++17 main.cpp -o ${PATH}main
+sample: sample.cpp
 
 run:
-	./bin/main
-
-clean:
-	rm bin/*
+	./sample
