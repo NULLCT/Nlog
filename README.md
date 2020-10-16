@@ -8,7 +8,7 @@ Nlog is C++ logger
 
 ## How to
 
-just `#include "Nlog.hpp`
+just `#include "Nlog.hpp"`
 
 ## Run sample
 
